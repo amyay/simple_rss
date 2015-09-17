@@ -1,23 +1,23 @@
 <div class="content">
-	<div class="rssentry_list">
-		<ul>
-		  {{#rssEntry}}
-			<li>
-				<h4 class="rsspostTitle">{{title}}</h4>
-				<br />
-				<p class="rssdate">Date: {{pubDate}}</p>
-				<br />
-				<p class="rssdescription">{{{description}}}</p>
-				<br />
-				<a href="{{link}}" target="_blank">Read More</a>
-				<br />
-				<p />
-			</li>
-			<hr />
-			{{/rssEntry}}
-		</ul>
-	</div>
+  <div class="rssentry_list">
+    <ul>
+      {{#rssEntry}}
+      <li>
+        <h4 class="rsspostTitle">{{title}}</h4>
+        <br />
+        <p class="rssdate">Date: {{pubDate}}</p>
+        <br />
+        <p class="rssdescription">{{{description}}}</p>
+        <br />
+        <a href="{{link}}" target="_blank">Read More</a>
+        <br />
+        <p />
+      </li>
+      <hr />
+      {{/rssEntry}}
+    </ul>
+  </div>
 <!--
-	<p><button class="btn_prev">previous</button><button class="btn_next">next</button></p>
+  <p><button class="btn_prev">previous</button><button class="btn_next">next</button></p>
 -->
 </div>
