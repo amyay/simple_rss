@@ -1,4 +1,18 @@
 button {
   padding: 5px 15px;
-  margin: 10px 40px;
+  margin: 10px 40px 20px;
 }
+
+button.btn_refresh {
+  margin: 10px 130px 20px;
+}
+
+button.btn_prev {
+  float: left;
+}
+
+button.btn_next {
+  float: right;
+}
+
+

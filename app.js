@@ -15,19 +15,24 @@
 
     events: {
       'app.activated'       :     'init',
-      'getRSSData.done'     :     'displayRSSData',
-      'getRSSData.fail'     :     'genericError'
-
+      'getRSSData.done'     :     'processRSSData',
+      'getRSSData.fail'     :     'genericError',
+      'click .btn_refresh'  :     'init',
+      'click .btn_prev'     :     'displayPrevRSSData',
+      'click .btn_next'     :     'displayNextRSSData'
     },
 
     init: function() {
-      // console.log ('in init');
+      console.log ('in init');
+      this.rssEntryList = [];
+      this.entriesPerPage = Number(this.setting('results_per_page'));
+      this.currentEntry = 0;
+      this.nextEntry = this.entriesPerPage;
       this.ajax('getRSSData');
     },
 
-    displayRSSData: function(data) {
+    processRSSData: function(data) {
       var r = data.getElementsByTagName('item');
-      var rssEntryList = [];
       for (var i = 0; i < r.length; i++) {
 
         // grab the post title
@@ -54,30 +59,49 @@
         };
 
         // push the object into an array
-        rssEntryList.push(rssEntry);
+        this.rssEntryList.push(rssEntry);
       } // end of for loop
-
-      // display content
-      this.switchTo('content', {
-        rssEntry: rssEntryList
-      });
+      this.displayRSSData();
     },
 
-    truncate: function(text, length, ellipsis) {
-      // Set length and ellipsis to defaults if not defined
-      if (typeof length == 'undefined')  length = 100;
-      if (typeof ellipsis == 'undefined')  ellipsis = '...';
-      // Return if the text is already lower than the cutoff
-      if (text.length < length) return text;
-      // Otherwise, check if the last character is a space.
-      // If not, keep counting down from the last character
-      // until we find a character that is a space
-      for (var i = length-1; text.charAt(i) != ' '; i--) {
-        length--;
+    displayRSSData: function() {
+      // display content
+      // if entries to display is less than results_per_page, then display them all, and hide buttons
+      if (this.entriesPerPage > this.rssEntryList.length) {
+        this.switchTo('content', {
+          rssEntry: this.rssEntryList
+        });
+        this.$('.btn_prev').hide();
+        this.$('.btn_next').hide();
       }
-      // The for() loop ends when it finds a space, and the length var
-      // has been updated so it doesn't cut in the middle of a word.
-      return text.substr(0, length) + ellipsis;
+      else {
+        // split up entries and display accordingly
+        var rssEntryListSub = this.rssEntryList.slice(this.currentEntry, this.nextEntry);
+        this.switchTo('content', {
+          rssEntry: rssEntryListSub
+        });
+
+        // hide buttons accordingly
+        if (this.currentEntry === 0) {
+          this.$('.btn_prev').css('visibility', 'hidden');
+        }
+
+        if (this.nextEntry >= this.rssEntryList.length) {
+          this.$('.btn_next').css('visibility', 'hidden');
+        }
+      }
+    },
+
+    displayPrevRSSData: function() {
+      this.nextEntry = this.currentEntry;
+      this.currentEntry = this.currentEntry - this.entriesPerPage;
+      this.displayRSSData();
+    },
+
+    displayNextRSSData: function() {
+      this.currentEntry = this.nextEntry;
+      this.nextEntry = this.currentEntry + this.entriesPerPage;
+      this.displayRSSData();
     },
 
     genericError: function() {
