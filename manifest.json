@@ -12,10 +12,17 @@
   "frameworkVersion": "1.0",
   "parameters": [
     {
+      "name": "rss_url",
+      "type": "text",
+      "required": true,
+      "default": "http://www.feedforall.com/sample.xml"
+    },
+    {
       "name": "results_per_page",
       "type": "number",
       "required": true,
       "default": 5
     }
+
   ]
 }

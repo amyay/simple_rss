@@ -2,9 +2,9 @@
 
   return {
     requests: {
-      getRSSData: function() {
+      getRSSData: function(rss_url) {
         return {
-          url: 'http://www.feedforall.com/sample.xml',
+          url: rss_url,
           // dataType: 'json',
      //      contentType: 'application/json',
           type: 'GET',
@@ -23,12 +23,13 @@
     },
 
     init: function() {
-      console.log ('in init');
+      // console.log ('in init');
       this.rssEntryList = [];
       this.entriesPerPage = Number(this.setting('results_per_page'));
+      this.rss_url = this.setting('rss_url');
       this.currentEntry = 0;
       this.nextEntry = this.entriesPerPage;
-      this.ajax('getRSSData');
+      this.ajax('getRSSData', this.rss_url);
     },
 
     processRSSData: function(data) {
